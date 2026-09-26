@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>سجل الحسابات — آية النوفلي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FAF7F0; --ink:#1F2A24; --sub:#5B6B60;
+  --green:#1E7145; --green-dark:#14502F; --green-soft:#EAF4EC;
+  --gold:#D98C1B; --gold-soft:#FBEBD2;
+  --red:#B23B32; --red-soft:#FBE4E1;
+  --card:#FFFFFF; --line:#DCE5DD;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#12211A; --ink:#EAF3EC; --sub:#9FB3A6;
+    --green:#4CAF7D; --green-dark:#8FD6AE; --green-soft:#1B3327;
+    --gold:#F0B85C; --gold-soft:#3A2C14;
+    --red:#E38178; --red-soft:#3A1E1B;
+    --card:#183226; --line:#2A4B39;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#12211A; --ink:#EAF3EC; --sub:#9FB3A6; --green:#4CAF7D; --green-dark:#8FD6AE;
+  --green-soft:#1B3327; --gold:#F0B85C; --gold-soft:#3A2C14; --red:#E38178; --red-soft:#3A1E1B;
+  --card:#183226; --line:#2A4B39;
+}
+*{box-sizing:border-box;}
+html{scroll-padding-top:60px; height:100%;}
+body{
+  height:100%; margin:0; background:var(--bg); color:var(--ink);
+  font-family:'Tajawal','Segoe UI',Tahoma,sans-serif; line-height:1.75;
+}
+h1,h2,h3,.brand{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;}
+.topbar{
+  background:linear-gradient(135deg,var(--green),var(--green-dark));
+  color:#fff; padding:14px 18px; padding-top:calc(14px + env(safe-area-inset-top,0px));
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+}
+.brand{font-size:1.05rem; font-weight:800;}
+.student-badge{
+  background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.35);
+  border-radius:10px; padding:6px 12px; font-size:.8rem; text-align:left; direction:rtl;
+}
+.student-badge b{display:block; font-size:.85rem;}
+.tabs{
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:5;
+  display:flex; gap:2px; background:var(--green-dark); padding:0 10px;
+}
+.tab-btn{
+  flex:1; border:none; cursor:pointer; padding:12px 8px; font-family:'Cairo',sans-serif;
+  font-weight:700; font-size:.92rem; background:#2E8557; color:#EAF6EF;
+  border-radius:10px 10px 0 0; opacity:.75; transition:transform .15s ease, opacity .15s ease;
+}
+.tab-btn.active{background:var(--bg); color:var(--green-dark); opacity:1; transform:translateY(2px);}
+main{max-width:720px; margin:0 auto; padding:20px 16px 60px;}
+.sheet{display:none;}
+.sheet.active{display:block; animation:fade .35s ease;}
+@keyframes fade{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+.hero{margin-bottom:22px;}
+.hero .eyebrow{color:var(--green); font-weight:700; font-size:.85rem;}
+.hero h1{font-size:1.5rem; margin:.2em 0 .3em; color:var(--ink);}
+.hero p{color:var(--sub); max-width:60ch; margin:0;}
+.card{
+  background:var(--card); border:1px solid var(--line); border-radius:14px;
+  padding:16px 18px; margin-bottom:16px;
+}
+.card h3{margin:0 0 8px; font-size:1.05rem; display:flex; align-items:center; gap:8px;}
+.badge{
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width:26px; height:26px; border-radius:6px; background:var(--green-soft);
+  color:var(--green-dark); font-weight:800; font-size:.85rem; font-family:'Cairo',sans-serif;
+}
+.card p{margin:.3em 0; color:var(--ink);}
+.steps{margin:10px 0 0; padding:0; list-style:none;}
+.steps li{
+  display:flex; gap:10px; padding:6px 0; border-top:1px dashed var(--line);
+  font-size:.95rem;
+}
+.steps li:first-child{border-top:none;}
+.steps li .num{
+  flex:none; width:24px; height:24px; border-radius:50%; background:var(--gold-soft);
+  color:var(--gold); font-weight:800; font-size:.8rem; display:flex; align-items:center;
+  justify-content:center; font-family:'Cairo',sans-serif;
+}
+.func-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:8px;}
+@media (max-width:420px){.func-grid{grid-template-columns:1fr;}}
+.func-cell{
+  background:var(--green-soft); border-radius:10px; padding:10px 12px;
+  border:1px solid var(--line);
+}
+.func-cell .fname{font-family:'Cairo',sans-serif; font-weight:800; color:var(--green-dark); font-size:.95rem;}
+.func-cell p{margin:.25em 0 0; font-size:.85rem; color:var(--sub);}
+.lab{
+  background:var(--gold-soft); border:1px solid var(--line); border-radius:14px;
+  padding:16px 18px; margin-bottom:16px;
+}
+.lab h3{margin:0 0 4px;}
+.lab p.hint{color:var(--sub); font-size:.85rem; margin:0 0 12px;}
+.sheet-table{width:100%; border-collapse:collapse; font-size:.85rem; background:var(--card); border-radius:10px; overflow:hidden;}
+.sheet-table th{background:var(--green-soft); color:var(--green-dark); padding:8px 4px; font-family:'Cairo',sans-serif;}
+.sheet-table td{padding:6px 4px; text-align:center; border-top:1px solid var(--line);}
+.sheet-table input{
+  width:100%; border:1px solid var(--line); border-radius:6px; padding:6px 2px;
+  text-align:center; font-family:inherit; font-size:.9rem; background:var(--bg); color:var(--ink);
+}
+.calc-btn{
+  margin-top:12px; background:var(--green); color:#fff; border:none; border-radius:10px;
+  padding:10px 20px; font-family:'Cairo',sans-serif; font-weight:700; font-size:.95rem; cursor:pointer;
+}
+.calc-btn:active{transform:scale(.97);}
+.results{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:12px;}
+.results div{background:var(--card); border-radius:10px; padding:8px 4px; text-align:center; border:1px solid var(--line);}
+.results .rlabel{font-size:.72rem; color:var(--sub);}
+.results .rval{font-family:'Cairo',sans-serif; font-weight:800; color:var(--green-dark); font-size:1.05rem;}
+.quiz-score{
+  position:sticky; top:calc(46px + env(safe-area-inset-top,0px)); z-index:4;
+  background:var(--card); border:1px solid var(--line); border-radius:12px;
+  padding:10px 16px; margin-bottom:16px; text-align:center; font-family:'Cairo',sans-serif;
+  font-weight:800; color:var(--green-dark);
+}
+.q-card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; margin-bottom:14px;}
+.q-title{font-weight:700; margin:0 0 10px; font-size:.98rem;}
+.opt{
+  display:block; width:100%; text-align:right; padding:10px 12px; margin-bottom:8px;
+  border:1px solid var(--line); border-radius:10px; background:var(--bg); color:var(--ink);
+  font-family:inherit; font-size:.9rem; cursor:pointer;
+}
+.opt:last-child{margin-bottom:0;}
+.opt.correct{background:var(--green-soft); border-color:var(--green); color:var(--green-dark); font-weight:700;}
+.opt.wrong{background:var(--red-soft); border-color:var(--red); color:var(--red); font-weight:700;}
+.opt[disabled]{cursor:default;}
+.explain{font-size:.83rem; color:var(--sub); margin-top:8px; display:none;}
+.explain.show{display:block;}
+.reset-row{text-align:center; margin-top:6px;}
+.reset-row button{
+  background:none; border:1px solid var(--line); border-radius:10px; padding:8px 18px;
+  font-family:'Cairo',sans-serif; font-weight:700; color:var(--sub); cursor:pointer;
+}
+.mini-steps{margin:0 0 16px; padding-inline-start:20px; color:var(--sub); font-size:.88rem;}
+.mini-steps li{margin-bottom:4px;}
+.xl-toolbar{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:8px;}
+.mode-btn{
+  border:1px solid var(--line); background:var(--green-soft); color:var(--green-dark);
+  font-family:'Cairo',sans-serif; font-weight:700; font-size:.82rem; border-radius:9px;
+  padding:8px 12px; cursor:pointer;
+}
+.mode-btn.active{background:var(--green); color:#fff; border-color:var(--green);}
+.sum-wrap{position:relative; margin-inline-start:auto;}
+.sum-btn{
+  border:1px solid var(--line); background:var(--gold-soft); color:var(--gold);
+  font-family:'Cairo',sans-serif; font-weight:800; font-size:.85rem; border-radius:9px;
+  padding:8px 14px; cursor:pointer;
+}
+.sum-btn:disabled{opacity:.45; cursor:not-allowed;}
+.sum-menu{
+  position:absolute; top:calc(100% + 6px); left:0; background:var(--card);
+  border:1px solid var(--line); border-radius:10px; box-shadow:0 8px 20px rgba(0,0,0,.12);
+  min-width:170px; padding:6px; z-index:6;
+}
+.sum-menu.hidden{display:none;}
+.sum-menu button{
+  display:block; width:100%; text-align:right; background:none; border:none;
+  padding:8px 10px; font-family:inherit; font-size:.85rem; color:var(--ink);
+  border-radius:7px; cursor:pointer;
+}
+.sum-menu button:hover{background:var(--green-soft);}
+.sum-menu button.more{color:var(--sub); border-top:1px solid var(--line); margin-top:4px; padding-top:8px;}
+.sel-hint{font-size:.82rem; color:var(--sub); margin:0 0 12px;}
+.formula-bar{
+  display:flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--line);
+  border-radius:10px; padding:8px 10px; margin-bottom:14px; font-size:.85rem;
+}
+.formula-bar .fx{font-style:italic; color:var(--green); font-weight:700;}
+.namebox{
+  background:var(--green-soft); color:var(--green-dark); border-radius:6px; padding:3px 10px;
+  font-family:'Cairo',sans-serif; font-weight:700; font-size:.78rem;
+}
+.formula-text{flex:1; color:var(--ink); font-weight:600; direction:ltr; text-align:right;}
+.enter-btn{
+  background:var(--green); color:#fff; border:none; border-radius:8px; padding:6px 12px;
+  font-family:'Cairo',sans-serif; font-weight:700; font-size:.8rem; cursor:pointer;
+}
+.enter-btn.hidden{display:none;}
+.xl-grid{width:100%; border-collapse:collapse; font-size:.82rem; margin-bottom:10px;}
+.xl-th{background:var(--green-soft); border:1px solid var(--line); padding:4px 2px; text-align:center;}
+.xl-letter{display:block; font-family:'Cairo',sans-serif; font-size:.68rem; color:var(--sub);}
+.xl-cap{display:block; font-weight:700; color:var(--green-dark); font-size:.78rem;}
+.xl-corner{background:var(--green-soft); border:1px solid var(--line); color:var(--sub); font-size:.7rem; width:22px;}
+.xl-label{background:var(--gold-soft); border:1px solid var(--line); padding:6px 4px; text-align:center; font-weight:700; font-size:.78rem; color:var(--gold);}
+.xl-cell{border:1px solid var(--line); padding:2px; text-align:center; background:var(--card); transition:background .15s ease;}
+.xl-cell input{
+  width:100%; border:none; background:transparent; text-align:center; font-family:inherit;
+  font-size:.92rem; color:var(--ink); padding:8px 2px;
+}
+.xl-cell input:disabled{color:var(--sub);}
+#sim.select-active .xl-cell.src-row{cursor:pointer;}
+#sim.select-active .xl-cell.src-row input{pointer-events:none; color:var(--sub);}
+.xl-cell.selected{background:rgba(30,113,69,.18); box-shadow:inset 0 0 0 2px var(--green);}
+.target-cell{
+  position:relative; border:2px dashed var(--gold); font-weight:800; color:var(--sub); font-size:.95rem;
+  background:var(--card);
+}
+.target-cell.has-result{border:2px solid var(--green); color:var(--green-dark);}
+.target-cell.fill-preview{border:2px dashed var(--green); background:rgba(30,113,69,.12);}
+.fill-handle{
+  display:none; position:absolute; bottom:-5px; left:-5px; width:11px; height:11px;
+  background:var(--green); border:2px solid var(--card); border-radius:2px;
+  cursor:crosshair; touch-action:none; z-index:3;
+}
+.fill-handle.show{display:block;}
+.sim-note{font-size:.82rem; color:var(--sub); margin-top:4px;}
+#resetSim{
+  background:none; border:1px solid var(--line); border-radius:9px; padding:7px 16px;
+  font-family:'Cairo',sans-serif; font-weight:700; color:var(--sub); cursor:pointer; margin-top:4px;
+}
+footer{text-align:center; color:var(--sub); font-size:.78rem; padding:20px; direction:rtl;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="brand">📊 سجل الحسابات</span>
+  <div class="student-badge"><b>آية بنت محمد بن قاسم النوفلي</b>الصف: السادس / ٣</div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" data-tab="explain">📘 الشرح</button>
+  <button class="tab-btn" data-tab="quiz">✏️ التمارين</button>
+  <button class="tab-btn" data-tab="sim">🖱️ محاكي الجمع</button>
+</div>
+
+<main>
+
+  <section id="explain" class="sheet active">
+    <div class="hero">
+      <span class="eyebrow">الدرس ٢-١</span>
+      <h1>إجراء العمليات الحسابية في Excel</h1>
+      <p>برنامج الجداول الحسابية يملك أدوات جاهزة تساعدك تحسب أي شيء بسرعة، بدون ما تكتب كل رقم بنفسك. تعالي نتعرف عليها.</p>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge">＋</span> أداة التعبئة التلقائية (AutoFill)</h3>
+      <p>لما تحسبين ناتج صف واحد، وتبين نفس الحساب لباقي الصفوف، ما تحتاجين تكررين نفس الخطوات من جديد. فقط اسحبي <b>مقبض التعبئة</b> وهو العلامة (+) التي تظهر في زاوية الخلية، وسيتم نسخ الصيغة تلقائيًا لكل خلية تسحبين عليها.</p>
+      <ul class="steps">
+        <li><span class="num">١</span> اضغطي على الخلية التي فيها ناتج الحساب الأول.</li>
+        <li><span class="num">٢</span> ضعي المؤشر عند الزاوية السفلية للخلية حتى يتحول شكله إلى (+).</li>
+        <li><span class="num">٣</span> اسحبي المؤشر إلى بقية الخلايا — وستُحسب كل النواتج فورًا.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge">Σ</span> الدوال الحسابية (Functions)</h3>
+      <p>الدوال صيغ جاهزة داخل Excel تنجز لك العمليات الحسابية بسرعة ودقة، بدل كتابة المعادلة يدويًا.</p>
+      <div class="func-grid">
+        <div class="func-cell"><div class="fname">SUM — المجموع</div><p>تجمع كل الأرقام المحددة في خلية واحدة.</p></div>
+        <div class="func-cell"><div class="fname">AVERAGE — المتوسط</div><p>تحسب المتوسط الحسابي لمجموعة أرقام.</p></div>
+        <div class="func-cell"><div class="fname">MAX — الحد الأقصى</div><p>تعطيك أكبر رقم بين القيم المحددة.</p></div>
+        <div class="func-cell"><div class="fname">MIN — الحد الأدنى</div><p>تعطيك أصغر رقم بين القيم المحددة.</p></div>
+      </div>
+      <ul class="steps" style="margin-top:14px;">
+        <li><span class="num">١</span> حددي الخلية التي تريدين ظهور الناتج فيها.</li>
+        <li><span class="num">٢</span> من تبويب Home، افتحي القائمة بجانب رمز Σ.</li>
+        <li><span class="num">٣</span> اختاري الدالة المناسبة (Sum، Average…).</li>
+        <li><span class="num">٤</span> حددي نطاق الخلايا واضغطي Enter.</li>
+      </ul>
+    </div>
+
+    <div class="lab">
+      <h3>🧮 جرّبي بنفسك</h3>
+      <p class="hint">أدخلي عدد الصفحات المقروءة كل يوم، ثم اضغطي احسب لترى النتائج مباشرة.</p>
+      <table class="sheet-table">
+        <tr><th>الأحد</th><th>الإثنين</th><th>الثلاثاء</th><th>الأربعاء</th><th>الخميس</th></tr>
+        <tr>
+          <td><input type="number" id="d0" value="13"></td>
+          <td><input type="number" id="d1" value="18"></td>
+          <td><input type="number" id="d2" value="12"></td>
+          <td><input type="number" id="d3" value="16"></td>
+          <td><input type="number" id="d4" value="15"></td>
+        </tr>
+      </table>
+      <button class="calc-btn" onclick="runLab()">احسب النتائج</button>
+      <div class="results">
+        <div><div class="rlabel">SUM</div><div class="rval" id="rSum">—</div></div>
+        <div><div class="rlabel">AVERAGE</div><div class="rval" id="rAvg">—</div></div>
+        <div><div class="rlabel">MAX</div><div class="rval" id="rMax">—</div></div>
+        <div><div class="rlabel">MIN</div><div class="rval" id="rMin">—</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="quiz" class="sheet">
+    <div class="hero">
+      <span class="eyebrow">اختبري نفسك</span>
+      <h1>أسئلة على الدرس</h1>
+      <p>اقرئي كل سؤال واختاري الإجابة الصحيحة. راح تشوفين التصحيح فورًا.</p>
+    </div>
+    <div class="quiz-score" id="scoreBox">النتيجة: ٠ / ٦</div>
+    <div id="quizWrap"></div>
+    <div class="reset-row"><button onclick="resetQuiz()">إعادة المحاولة</button></div>
+  </section>
+
+  <section id="sim" class="sheet">
+    <div class="hero">
+      <span class="eyebrow">تجربة عملية</span>
+      <h1>محاكي تحديد الخلايا وتفعيل SUM</h1>
+      <p>هذه محاكاة حقيقية لما يحدث داخل Excel: تكتبين أرقامًا، تحدّدين الخلايا، ثم تفعّلين الدالة لترى الناتج في الخلية G3.</p>
+    </div>
+
+    <div class="card">
+      <ol class="mini-steps">
+        <li>اكتبي رقمًا في كل خلية من B3 إلى F3 (وضع "كتابة الأرقام").</li>
+        <li>اضغطي "تحديد الخلايا" ثم انقري كل خلية تريدين جمعها.</li>
+        <li>اضغطي زر Σ، اختاري "Sum"، ثم اضغطي "↵ إدخال" لترى الناتج في G3.</li>
+        <li>اسحبي المربع الأخضر الصغير (مقبض التعبئة) الظاهر أسفل الخلية G3 لأسفل حتى الصف ٦ لنسخ الصيغة تلقائيًا لبقية المجموعات.</li>
+      </ol>
+
+      <div class="xl-toolbar">
+        <button id="modeWrite" class="mode-btn active" onclick="setMode('write')">✏️ كتابة الأرقام</button>
+        <button id="modeSelect" class="mode-btn" onclick="setMode('select')">🖱️ تحديد الخلايا</button>
+        <div class="sum-wrap">
+          <button id="sumBtn" class="sum-btn" disabled onclick="toggleSumMenu()">Σ ▾</button>
+          <div id="sumMenu" class="sum-menu hidden">
+            <button data-fn="sum" onclick="applyFn('sum')">Σ Sum</button>
+            <button data-fn="avg" onclick="applyFn('avg')">Average</button>
+            <button data-fn="count" onclick="applyFn('count')">Count Numbers</button>
+            <button data-fn="max" onclick="applyFn('max')">Max</button>
+            <button data-fn="min" onclick="applyFn('min')">Min</button>
+            <button class="more" onclick="closeSumMenu()">More Functions…</button>
+          </div>
+        </div>
+      </div>
+      <p class="sel-hint" id="selHint">الوضع الحالي: كتابة الأرقام — اكتبي رقمًا في كل خلية.</p>
+
+      <div class="formula-bar">
+        <span class="fx">fx</span>
+        <span class="namebox">G3</span>
+        <span class="formula-text" id="formulaText"></span>
+        <button id="enterBtn" class="enter-btn hidden" onclick="confirmFormula()">↵ إدخال</button>
+      </div>
+
+      <table class="xl-grid">
+        <tr>
+          <th class="xl-th"><span class="xl-letter">A</span><span class="xl-cap">اسم المجموعة</span></th>
+          <th class="xl-th"><span class="xl-letter">B</span><span class="xl-cap">الأحد</span></th>
+          <th class="xl-th"><span class="xl-letter">C</span><span class="xl-cap">الإثنين</span></th>
+          <th class="xl-th"><span class="xl-letter">D</span><span class="xl-cap">الثلاثاء</span></th>
+          <th class="xl-th"><span class="xl-letter">E</span><span class="xl-cap">الأربعاء</span></th>
+          <th class="xl-th"><span class="xl-letter">F</span><span class="xl-cap">الخميس</span></th>
+          <th class="xl-th"><span class="xl-letter">G</span><span class="xl-cap">المجموع</span></th>
+          <th class="xl-corner">٣</th>
+        </tr>
+        <tr>
+          <td class="xl-label">المجموعة الأولى</td>
+          <td class="xl-cell src-row" data-ref="B3" onclick="cellClick(this)"><input type="number" value="13"></td>
+          <td class="xl-cell src-row" data-ref="C3" onclick="cellClick(this)"><input type="number" value="18"></td>
+          <td class="xl-cell src-row" data-ref="D3" onclick="cellClick(this)"><input type="number" value="12"></td>
+          <td class="xl-cell src-row" data-ref="E3" onclick="cellClick(this)"><input type="number" value="16"></td>
+          <td class="xl-cell src-row" data-ref="F3" onclick="cellClick(this)"><input type="number" value="15"></td>
+          <td class="xl-cell target-cell" id="target3" data-row="3"><span id="target3val">—</span><span class="fill-handle" id="fillHandle"></span></td>
+          <td class="xl-corner">٣</td>
+        </tr>
+        <tr>
+          <td class="xl-label">المجموعة الثانية</td>
+          <td class="xl-cell" data-ref="B4"><input type="number" value="12"></td>
+          <td class="xl-cell" data-ref="C4"><input type="number" value="11"></td>
+          <td class="xl-cell" data-ref="D4"><input type="number" value="14"></td>
+          <td class="xl-cell" data-ref="E4"><input type="number" value="11"></td>
+          <td class="xl-cell" data-ref="F4"><input type="number" value="13"></td>
+          <td class="xl-cell target-cell" id="target4" data-row="4">—</td>
+          <td class="xl-corner">٤</td>
+        </tr>
+        <tr>
+          <td class="xl-label">المجموعة الثالثة</td>
+          <td class="xl-cell" data-ref="B5"><input type="number" value="10"></td>
+          <td class="xl-cell" data-ref="C5"><input type="number" value="13"></td>
+          <td class="xl-cell" data-ref="D5"><input type="number" value="10"></td>
+          <td class="xl-cell" data-ref="E5"><input type="number" value="12"></td>
+          <td class="xl-cell" data-ref="F5"><input type="number" value="11"></td>
+          <td class="xl-cell target-cell" id="target5" data-row="5">—</td>
+          <td class="xl-corner">٥</td>
+        </tr>
+        <tr>
+          <td class="xl-label">المجموعة الرابعة</td>
+          <td class="xl-cell" data-ref="B6"><input type="number" value="14"></td>
+          <td class="xl-cell" data-ref="C6"><input type="number" value="17"></td>
+          <td class="xl-cell" data-ref="D6"><input type="number" value="16"></td>
+          <td class="xl-cell" data-ref="E6"><input type="number" value="14"></td>
+          <td class="xl-cell" data-ref="F6"><input type="number" value="12"></td>
+          <td class="xl-cell target-cell" id="target6" data-row="6">—</td>
+          <td class="xl-corner">٦</td>
+        </tr>
+      </table>
+      <p class="sim-note" id="simNote">جرّبي تغيير الأرقام ثم كرّري التحديد لترين كيف يتغيّر الناتج.</p>
+      <button id="resetSim" onclick="resetSim()">↺ ابدئي من جديد</button>
+    </div>
+  </section>
+
+</main>
+
+<footer>من إعداد الطالبة آية بنت محمد بن قاسم النوفلي — الصف السادس / ٣</footer>
+
+<script>
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.sheet').forEach(s=>s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+function runLab(){
+  const vals=[0,1,2,3,4].map(i=>parseFloat(document.getElementById('d'+i).value)).filter(v=>!isNaN(v));
+  if(vals.length===0){
+    ['rSum','rAvg','rMax','rMin'].forEach(id=>document.getElementById(id).textContent='—');
+    return;
+  }
+  const sum=vals.reduce((a,b)=>a+b,0);
+  document.getElementById('rSum').textContent=sum;
+  document.getElementById('rAvg').textContent=(sum/vals.length).toFixed(1);
+  document.getElementById('rMax').textContent=Math.max(...vals);
+  document.getElementById('rMin').textContent=Math.min(...vals);
+}
+
+const QUESTIONS=[
+  {q:'ما الذي تفعله دالة SUM؟', opts:['تجمع القيم المحددة معًا','تحسب متوسط القيم','تعطي أكبر قيمة','تعطي أصغر قيمة'], correct:0, ex:'دالة SUM تجمع كل الأرقام التي تحددينها في خلية واحدة.'},
+  {q:'أي دالة تُستخدم لمعرفة المتوسط الحسابي لمجموعة أرقام؟', opts:['MAX','MIN','AVERAGE','SUM'], correct:2, ex:'AVERAGE تحسب المتوسط الحسابي للقيم المحددة.'},
+  {q:'ماذا تعطيك دالة MAX؟', opts:['أصغر قيمة','أكبر قيمة','مجموع القيم','عدد القيم'], correct:1, ex:'MAX تعطي أكبر رقم بين القيم المحددة.'},
+  {q:'ماذا تعطيك دالة MIN؟', opts:['أكبر قيمة','أصغر قيمة','المتوسط الحسابي','مجموع القيم'], correct:1, ex:'MIN تعطي أصغر رقم بين القيم المحددة.'},
+  {q:'ما اسم العلامة (+) في زاوية الخلية التي تُستخدم لنسخ الصيغة تلقائيًا؟', opts:['زر الحفظ','مقبض التعبئة (Fill Handle)','شريط الصيغة','تبويب البيانات'], correct:1, ex:'هذه العلامة تسمى مقبض التعبئة، وسحبها ينسخ الصيغة على باقي الخلايا.'},
+  {q:'في أي تبويب تجدين أداة Σ (المجموع) داخل Excel؟', opts:['Insert','Page Layout','Home','Review'], correct:2, ex:'أداة Σ موجودة ضمن مجموعة Editing في تبويب Home.'}
+];
+
+function buildQuiz(){
+  const wrap=document.getElementById('quizWrap');
+  wrap.innerHTML='';
+  QUESTIONS.forEach((item,qi)=>{
+    const card=document.createElement('div');
+    card.className='q-card';
+    const title=document.createElement('p');
+    title.className='q-title';
+    title.textContent=(qi+1)+'. '+item.q;
+    card.appendChild(title);
+    item.opts.forEach((opt,oi)=>{
+      const b=document.createElement('button');
+      b.className='opt'; b.type='button'; b.textContent=opt;
+      b.addEventListener('click',()=>answer(qi,oi,card));
+      card.appendChild(b);
+    });
+    const ex=document.createElement('p');
+    ex.className='explain'; ex.id='ex'+qi; ex.textContent=item.ex;
+    card.appendChild(ex);
+    wrap.appendChild(card);
+  });
+  updateScore();
+}
+let answered={};
+function answer(qi,oi,card){
+  if(answered[qi]!==undefined) return;
+  answered[qi]=oi;
+  const opts=card.querySelectorAll('.opt');
+  opts.forEach((b,i)=>{
+    b.disabled=true;
+    if(i===QUESTIONS[qi].correct) b.classList.add('correct');
+    else if(i===oi) b.classList.add('wrong');
+  });
+  document.getElementById('ex'+qi).classList.add('show');
+  updateScore();
+}
+function updateScore(){
+  const done=Object.keys(answered).length;
+  const correct=Object.entries(answered).filter(([qi,oi])=>QUESTIONS[qi].correct===oi).length;
+  document.getElementById('scoreBox').textContent='النتيجة: '+toArabicDigits(correct)+' / ٦'+(done<6?'  •  أُجيب عن '+toArabicDigits(done)+' من ٦':'');
+}
+function toArabicDigits(n){
+  return String(n).replace(/[0-9]/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
+}
+function resetQuiz(){ answered={}; buildQuiz(); }
+buildQuiz();
+
+/* ---- SUM simulator ---- */
+const REFS=['B3','C3','D3','E3','F3'];
+let simMode='write';
+let selectedRefs=[];
+const FN_LABEL={sum:'SUM', avg:'AVERAGE', count:'COUNT', max:'MAX', min:'MIN'};
+
+function cellInput(ref){ return document.querySelector('.xl-cell[data-ref="'+ref+'"] input'); }
+function cellTd(ref){ return document.querySelector('.xl-cell[data-ref="'+ref+'"]'); }
+
+function setMode(mode){
+  simMode=mode;
+  document.getElementById('modeWrite').classList.toggle('active', mode==='write');
+  document.getElementById('modeSelect').classList.toggle('active', mode==='select');
+  document.getElementById('sim').classList.toggle('select-active', mode==='select');
+  if(mode==='write'){
+    selectedRefs=[];
+    REFS.forEach(r=>cellTd(r).classList.remove('selected'));
+    document.getElementById('sumBtn').disabled=true;
+    closeSumMenu();
+    document.getElementById('selHint').textContent='الوضع الحالي: كتابة الأرقام — اكتبي رقمًا في كل خلية.';
+  } else {
+    document.getElementById('selHint').textContent='الوضع الحالي: تحديد الخلايا — انقري كل خلية تريدين ضمها للتحديد.';
+  }
+}
+
+function cellClick(td){
+  if(simMode!=='select') return;
+  const ref=td.dataset.ref;
+  if(selectedRefs.includes(ref)){
+    selectedRefs=selectedRefs.filter(r=>r!==ref);
+    td.classList.remove('selected');
+  } else {
+    selectedRefs.push(ref);
+    td.classList.add('selected');
+  }
+  selectedRefs.sort((a,b)=>REFS.indexOf(a)-REFS.indexOf(b));
+  document.getElementById('sumBtn').disabled = selectedRefs.length===0;
+  document.getElementById('selHint').textContent = selectedRefs.length
+    ? 'الخلايا المحددة: '+selectedRefs.join('، ')
+    : 'الوضع الحالي: تحديد الخلايا — انقري كل خلية تريدين ضمها للتحديد.';
+}
+
+function toggleSumMenu(){
+  if(document.getElementById('sumBtn').disabled) return;
+  document.getElementById('sumMenu').classList.toggle('hidden');
+}
+function closeSumMenu(){ document.getElementById('sumMenu').classList.add('hidden'); }
+
+function rangeLabel(refs){
+  const idxs=refs.map(r=>REFS.indexOf(r));
+  const contiguous = idxs.every((v,i)=>i===0 || v===idxs[i-1]+1);
+  return contiguous ? refs[0]+':'+refs[refs.length-1] : refs.join(',');
+}
+
+let pendingFn=null;
+function applyFn(fn){
+  if(selectedRefs.length===0) return;
+  pendingFn=fn;
+  document.getElementById('formulaText').textContent='=' + FN_LABEL[fn] + '(' + rangeLabel(selectedRefs) + ')';
+  document.getElementById('enterBtn').classList.remove('hidden');
+  closeSumMenu();
+}
+
+function confirmFormula(){
+  if(!pendingFn) return;
+  const values = selectedRefs.map(r=>parseFloat(cellInput(r).value)).filter(v=>!isNaN(v));
+  let result;
+  if(pendingFn==='sum') result = values.reduce((a,b)=>a+b,0);
+  else if(pendingFn==='avg') result = values.length ? (values.reduce((a,b)=>a+b,0)/values.length).toFixed(1) : 0;
+  else if(pendingFn==='count') result = values.length;
+  else if(pendingFn==='max') result = values.length ? Math.max(...values) : 0;
+  else if(pendingFn==='min') result = values.length ? Math.min(...values) : 0;
+  const target=document.getElementById('target3');
+  document.getElementById('target3val').textContent = result;
+  target.classList.add('has-result');
+  document.getElementById('fillHandle').classList.add('show');
+  document.getElementById('simNote').textContent='الصيغة المستخدمة: =' + FN_LABEL[pendingFn] + '(' + rangeLabel(selectedRefs) + ')  ←  الناتج: ' + result + '. جرّبي الآن سحب المربع الأخضر لأسفل لنسخ الصيغة!';
+  document.getElementById('enterBtn').classList.add('hidden');
+  pendingFn=null;
+  setMode('write');
+}
+
+function resetSim(){
+  const rowDefaults={3:[13,18,12,16,15],4:[12,11,14,11,13],5:[10,13,10,12,11],6:[14,17,16,14,12]};
+  ['3','4','5','6'].forEach(row=>{
+    ['B','C','D','E','F'].forEach((col,i)=>{
+      const inp=cellInput(col+row);
+      if(inp) inp.value=rowDefaults[row][i];
+    });
+  });
+  document.getElementById('target3val').textContent='—';
+  ['3','4','5','6'].forEach(row=>{
+    const t=document.getElementById('target'+row);
+    if(row!=='3') t.textContent='—';
+    t.classList.remove('has-result','fill-preview');
+  });
+  document.getElementById('fillHandle').classList.remove('show');
+  document.getElementById('formulaText').textContent='';
+  document.getElementById('simNote').textContent='جرّبي تغيير الأرقام ثم كرّري التحديد لترين كيف يتغيّر الناتج.';
+  setMode('write');
+}
+
+/* ---- Drag the fill handle to AutoFill rows 4-6 ---- */
+const ROW_DEFAULT_ORDER=[4,5,6];
+let dragging=false, dragMaxRow=3;
+
+function rowSum(row){
+  return ['B','C','D','E','F'].reduce((s,col)=>{
+    const v=parseFloat(cellInput(col+row).value);
+    return s + (isNaN(v)?0:v);
+  },0);
+}
+
+function clearPreview(){
+  ROW_DEFAULT_ORDER.forEach(r=>document.getElementById('target'+r).classList.remove('fill-preview'));
+}
+
+function updateFillPreview(maxRow){
+  dragMaxRow=maxRow;
+  clearPreview();
+  ROW_DEFAULT_ORDER.forEach(r=>{
+    if(r<=maxRow && r>3) document.getElementById('target'+r).classList.add('fill-preview');
+  });
+  if(maxRow>3){
+    document.getElementById('simNote').textContent='سيتم نسخ الصيغة =SUM(B'+maxRow+':F'+maxRow+') وما قبلها حتى الصف '+maxRow+' — ارفعي إصبعك لتأكيد النسخ.';
+  }
+}
+
+function finalizeFill(maxRow){
+  clearPreview();
+  if(maxRow<=3) return;
+  ROW_DEFAULT_ORDER.forEach(r=>{
+    if(r<=maxRow){
+      const t=document.getElementById('target'+r);
+      t.textContent=rowSum(r);
+      t.classList.add('has-result');
+    }
+  });
+  document.getElementById('simNote').textContent='تم! نسخت أداة AutoFill الصيغة تلقائيًا من G3 إلى الصف '+maxRow+' — بدون كتابة أي شيء بنفسك.';
+}
+
+const fillHandleEl=document.getElementById('fillHandle');
+fillHandleEl.addEventListener('pointerdown', e=>{
+  if(!fillHandleEl.classList.contains('show')) return;
+  dragging=true; dragMaxRow=3;
+  fillHandleEl.setPointerCapture(e.pointerId);
+  e.preventDefault();
+});
+document.addEventListener('pointermove', e=>{
+  if(!dragging) return;
+  const el=document.elementFromPoint(e.clientX, e.clientY);
+  const td=el && el.closest('.target-cell');
+  if(td && td.dataset.row){
+    const r=parseInt(td.dataset.row,10);
+    if(r>=3 && r<=6) updateFillPreview(r);
+  }
+});
+document.addEventListener('pointerup', e=>{
+  if(!dragging) return;
+  dragging=false;
+  finalizeFill(dragMaxRow);
+});
+
+document.addEventListener('click',e=>{
+  const wrap=document.querySelector('.sum-wrap');
+  if(wrap && !wrap.contains(e.target)) closeSumMenu();
+});
+</script>
+</body>
+</html>
